@@ -1,0 +1,92 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div style="color:#333333;" class="jumbotron">
+    <p class="lead">The links below will trigger different behavior on the server and attach a message to the log below.</p>
+</div>
+
+<div class="row">
+    <ul class="nav navbar-nav">
+        <li><a onclick="slow()">Slow Method</a></li>
+        <li><a onclick="highCpu()">High CPU Method</a></li>
+        <li><a onclick="memorySink()">Memory Hog</a></li>
+        <li><a onclick="memoryRelease()">Reset Memory Hog</a></li>
+        <li><a onclick="threadContention()">Thread Contention</a></li>
+    </ul>
+
+    
+</div>
+
+<div>
+    <ul id="log"></ul>
+</div>
+
+<script>
+    function logData(data) {
+        var list = document.getElementById("log");
+        var item = document.createElement("li");
+        item.innerHTML = data;
+        list.appendChild(item);
+    }
+
+    function slow() {
+        $.ajax({
+            url: '@Url.Action("Slow", "Home")',
+            data: {},
+            cache: false,
+            type: 'GET',
+            success: function (data) {
+                logData(data);
+            }
+        });
+    }
+
+    function highCpu() {
+        $.ajax({
+            url: '@Url.Action("HighCPU", "Home")',
+            data: {},
+            cache: false,
+            type: 'GET',
+            success: function (data) {
+                logData(data);
+            }
+        });
+    }
+
+    function memorySink() {
+        $.ajax({
+            url: '@Url.Action("MemorySink", "Home")',
+            data: {},
+            cache: false,
+            type: 'GET',
+            success: function (data) {
+                logData(data);
+            }
+        });
+    }
+
+    function memoryRelease() {
+        $.ajax({
+            url: '@Url.Action("MemoryRelease", "Home")',
+            data: {},
+            cache: false,
+            type: 'GET',
+            success: function (data) {
+                logData(data);
+            }
+        });
+    }
+
+    function threadContention() {
+        $.ajax({
+            url: '@Url.Action("ThreadContention", "Home")',
+            data: {},
+            cache: false,
+            type: 'GET',
+            success: function (data) {
+                logData(data);
+            }
+        });
+    }
+</script>
