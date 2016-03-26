@@ -14,6 +14,8 @@ namespace DiagnosticsExample.Controllers
 {
     public class HomeController : Controller
     {
+        TraceSource trace = new TraceSource("myTraceSource");
+
         public ActionResult Index()
         {
             return View();
@@ -35,6 +37,9 @@ namespace DiagnosticsExample.Controllers
 
         public string Slow()
         {
+            Trace.TraceInformation("Started Slow()");
+            var start = DateTime.Now;
+
             int bits = 0;
 
             for (int i = 0; i < 3; i++)
@@ -43,24 +48,34 @@ namespace DiagnosticsExample.Controllers
                 Trace.WriteLine("Fetching " + url);
                 bits += new WebClient().DownloadString(url).Length;
             }
-                
 
+            Trace.TraceInformation("Slow() finished in " + (DateTime.Now - start) + "ms");
             return "yawn, I'm so sleepy... (≚ᄌ≚)ƶƵ  ... " + bits + "b downloaded";
         }
 
         public string HighCPU()
         {
+            Trace.TraceInformation("Started HighCPU()");
+            var start = DateTime.Now;
+
             for (int i = 0; i < 1000000; i++)
             {
                 Console.Write(i * i);
             }
 
+            Trace.TraceInformation("HighCPU() finished in " + (DateTime.Now - start) + "ms");
             return "TOO MUCH COFFEE!!! ಠ_ಠ";
         }
 
         public string ThreadContention()
         {
+            Trace.TraceInformation("Started ThreadContention()");
+            var start = DateTime.Now;
+
             Parallel.For(1, 1000000, (i) => Console.WriteLine(i));
+
+
+            Trace.TraceInformation("ThreadContention() finished in " + (DateTime.Now - start) + "ms");
             return "Can't we all just get along? ¯\\_(ツ)_/¯";
         }
 
@@ -75,6 +90,8 @@ namespace DiagnosticsExample.Controllers
         LinkedList<string> junk = new LinkedList<string>();
         public string MemorySink()
         {
+            Trace.TraceInformation("Started MemorySink()");
+            var start = DateTime.Now;
 
             var sb = new StringBuilder();
             bool go = true;
@@ -97,6 +114,8 @@ namespace DiagnosticsExample.Controllers
                 }
             }
 
+
+            Trace.TraceInformation("MemorySink() finished in " + (DateTime.Now - start) + "ms");
             return "Y U HAVE NO MO MEMRY??  ლ(ಠ益ಠლ) " + (junk.Count * junk.First().Length)/1000000 + "Mb";
         }
     }
