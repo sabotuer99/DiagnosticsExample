@@ -13,6 +13,8 @@
         <li><a onclick="memorySink()">Memory Hog</a></li>
         <li><a onclick="memoryRelease()">Reset Memory Hog</a></li>
         <li><a onclick="threadContention()">Thread Contention</a></li>
+        <li><a onclick="tryEventLog()">Event Log</a></li>
+        <li><a onclick="tryEventSource()">Event Source</a></li>
     </ul>
 
     
@@ -81,6 +83,30 @@
     function threadContention() {
         $.ajax({
             url: '@Url.Action("ThreadContention", "Home")',
+            data: {},
+            cache: false,
+            type: 'GET',
+            success: function (data) {
+                logData(data);
+            }
+        });
+    }
+
+    function tryEventLog() {
+        $.ajax({
+            url: '@Url.Action("TryEventLog", "Home")',
+            data: {},
+            cache: false,
+            type: 'GET',
+            success: function (data) {
+                logData(data);
+            }
+        });
+    }
+
+    function tryEventSource() {
+        $.ajax({
+            url: '@Url.Action("TryEventSource", "Home")',
             data: {},
             cache: false,
             type: 'GET',

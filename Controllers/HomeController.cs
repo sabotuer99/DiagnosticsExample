@@ -9,12 +9,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml;
+using System.Xml.XPath;
 
 namespace DiagnosticsExample.Controllers
 {
     public class HomeController : Controller
     {
-        TraceSource trace = new TraceSource("myTraceSource");
+        
 
         public ActionResult Index()
         {
@@ -45,11 +47,12 @@ namespace DiagnosticsExample.Controllers
             for (int i = 0; i < 3; i++)
             {
                 string url = "http://espn.go.com/?rand=" + new Random().Next().ToString();
-                Trace.WriteLine("Fetching " + url);
+                Trace.TraceInformation("Fetching " + url);
                 bits += new WebClient().DownloadString(url).Length;
             }
 
             Trace.TraceInformation("Slow() finished in " + (DateTime.Now - start) + "ms");
+
             return "yawn, I'm so sleepy... (≚ᄌ≚)ƶƵ  ... " + bits + "b downloaded";
         }
 
@@ -118,5 +121,52 @@ namespace DiagnosticsExample.Controllers
             Trace.TraceInformation("MemorySink() finished in " + (DateTime.Now - start) + "ms");
             return "Y U HAVE NO MO MEMRY??  ლ(ಠ益ಠლ) " + (junk.Count * junk.First().Length)/1000000 + "Mb";
         }
+
+        public string TryEventLog()
+        {
+            try
+            {
+                EventLog.WriteEntry("MYEVENTSOURCE", 
+                    "Create log in Windows Event Log!", 
+                    EventLogEntryType.Warning, 9999);
+            }
+            catch (Exception ex)
+            {
+                return "Something exploded: " + ex.Message;
+            }
+
+            return "Look at you, cool guy, writing to the Windows EventLog! ԅ(´ڡ`ԅ)";
+
+        }
+
+        public string TryEventSource()
+        {
+            FileStream ostrm;
+            StreamWriter writer;
+            TextWriter oldOut = Console.Out;
+            ostrm = new FileStream("c:\\Trace\\Console.txt", FileMode.OpenOrCreate, FileAccess.Write);
+            writer = new StreamWriter(ostrm);
+            Console.SetOut(writer);
+
+            TraceSource trace = new TraceSource("MySource");
+
+            //string testString = "<Test><InnerElement Val=\"1\" /><InnerElement Val=\"Data\"/><AnotherElement>crap crap crap crap crap crap</AnotherElement></Test>";
+            //XmlTextReader myXml = new XmlTextReader(new StringReader(testString));
+            //XPathDocument xDoc = new XPathDocument(myXml);
+            //XPathNavigator myNav = xDoc.CreateNavigator();
+            //trace.TraceData(TraceEventType.Error, 38, myNav);
+
+            trace.TraceEvent(TraceEventType.Error, 0, "crap crap crap crap crap crap");
+            trace.TraceInformation("This is a call to trace.TraceInformation...");
+            trace.Close();
+            Console.SetOut(oldOut);
+            writer.Close();
+            ostrm.Close();
+
+            return "Output file should have some crap in it...";
+        }
+
+
+
     }
 }
