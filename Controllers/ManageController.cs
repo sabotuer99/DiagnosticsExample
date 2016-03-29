@@ -7,9 +7,11 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using DiagnosticsExample.Models;
+using DiagnosticsExample.Filters;
 
 namespace DiagnosticsExample.Controllers
 {
+    [ActionLogFilter]
     [Authorize]
     public class ManageController : Controller
     {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DiagnosticsExample.Filters;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -14,6 +15,7 @@ using System.Xml.XPath;
 
 namespace DiagnosticsExample.Controllers
 {
+    [ActionLogFilter]
     public class HomeController : Controller
     {
         
@@ -149,13 +151,6 @@ namespace DiagnosticsExample.Controllers
             Console.SetOut(writer);
 
             TraceSource trace = new TraceSource("MySource");
-
-            //string testString = "<Test><InnerElement Val=\"1\" /><InnerElement Val=\"Data\"/><AnotherElement>crap crap crap crap crap crap</AnotherElement></Test>";
-            //XmlTextReader myXml = new XmlTextReader(new StringReader(testString));
-            //XPathDocument xDoc = new XPathDocument(myXml);
-            //XPathNavigator myNav = xDoc.CreateNavigator();
-            //trace.TraceData(TraceEventType.Error, 38, myNav);
-
             trace.TraceEvent(TraceEventType.Error, 0, "crap crap crap crap crap crap");
             trace.TraceInformation("This is a call to trace.TraceInformation...");
             trace.Close();

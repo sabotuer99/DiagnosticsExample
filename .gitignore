@@ -5,3 +5,9 @@ bin/*
 obj/*
 packages/*
 /bin/*
+App_Data/*
+bin/*
+Content/bootstrap*
+*.suo
+fonts/*
+obj/*
