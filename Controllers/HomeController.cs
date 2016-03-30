@@ -165,21 +165,31 @@ namespace DiagnosticsExample.Controllers
             return "Output file should have some crap in it...";
         }
 
+        string _x = "";
         public string CodeContract(string x)
         {
-            IContract contract = new ContractImpl(); 
+            IContract contract = new ContractImpl();
 
+            
             //static checking will throw a build warning
             //contract.CodeContract(null);
 
             try
             {
+                this._x = x;
                 return contract.CodeContract(x);
             }
             catch (Exception ex)
             {
                 return ex.Message;
             }
+        }
+
+        [ContractInvariantMethod]
+        private void ObjectInvariant()
+        {
+            //sending "poof" will throw an uncaught exception
+            Contract.Invariant(!this._x.Equals("poof"));
         }
     }
 
