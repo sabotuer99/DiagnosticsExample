@@ -202,7 +202,8 @@ namespace DiagnosticsExample.Controllers
             Contract.Requires(!x.Equals("Yaarg!"), "We hate pirates!");
             int result = 0;
             Int32.TryParse(x, out result);
-            Contract.Ensures(result == 0 || result > 100, "If you pass a number, must be greater than 100, fool!");
+            Contract.Ensures(result == 0 || result > 100, 
+                "If you pass a number, must be greater than 100, fool!");
             return default(string);
         }
     }
