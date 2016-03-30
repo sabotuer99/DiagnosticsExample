@@ -21,6 +21,13 @@
 </div>
 
 <div>
+    <p>Input a string or number greater than 100 to test code contracts...</p>
+    <label for="exampleInputEmail1">Contract Test</label>
+    <input type="email" class="form-control" id="codeContractInput" placeholder="Do not say Yaarg!">
+    <button class="btn btn-primary" onclick="codeContract()">Submit</button>
+</div>
+
+<div>
     <ul id="log"></ul>
 </div>
 
@@ -111,6 +118,26 @@
             cache: false,
             type: 'GET',
             success: function (data) {
+                logData(data);
+            }
+        });
+    }
+
+    function codeContract() {
+
+        var baseUrl = '@Url.Action("CodeContract", "Home", new { x = "XXxXX" }, null)'
+        var x = document.getElementById("codeContractInput").value;
+        var url = baseUrl.replace("XXxXX", x);
+
+        $.ajax({
+            url: url,
+            data: {},
+            cache: false,
+            type: 'GET',
+            success: function (data) {
+                logData(data);
+            },
+            failure: function (data) {
                 logData(data);
             }
         });
