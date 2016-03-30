@@ -169,8 +169,9 @@ namespace DiagnosticsExample.Controllers
         {
             IContract contract = new ContractImpl(); 
 
-            //static checking will throw a warning
+            //static checking will throw a build warning
             //contract.CodeContract(null);
+
             try
             {
                 return contract.CodeContract(x);
